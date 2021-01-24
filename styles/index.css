@@ -1,7 +1,50 @@
 @tailwind base;
 
 /* Write your own custom base styles here */
+html,
+body {
+  font-family: Helvetica Neue,Arial,Hiragino Kaku Gothic ProN,
+    Hiragino Sans,Meiryo,sans-serif;
+  font-size: 14px;
+}
 
+article h2 {
+  margin: 0px 0px 0px 0px;
+  padding: 40px 0px 10px 0px;
+  background-color:inherit;
+  color:inherit;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 1.2;
+}
+
+article h3 {
+  margin: 35px 0px 0px 0px;
+  padding: 0px 0px;
+  border-left: none;
+  background-color:inherit;
+  font-size:18px;
+  font-weight: bold;
+  line-height: 1.2;
+  letter-spacing: 0px;
+}
+
+article a {
+  color: blue;
+}
+
+article a:hover{
+  text-decoration: underline;
+}
+article a:visited{
+  color: #609;
+}
+
+code.hljs {
+  padding: 1em;
+  font-size: 80%;
+  font-family: Consolas, Monaco, monospace;
+}
 /* Start purging... */
 @tailwind components;
 /* Stop purging. */

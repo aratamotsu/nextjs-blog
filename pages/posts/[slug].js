@@ -10,6 +10,7 @@ import PostTitle from '../../components/post-title'
 import Head from 'next/head'
 import { CMS_NAME } from '../../lib/constants'
 import markdownToHtml from '../../lib/markdownToHtml'
+import Footer from '../../components/footer'
 
 export default function Post({ post, morePosts, preview }) {
   const router = useRouter()
@@ -17,7 +18,7 @@ export default function Post({ post, morePosts, preview }) {
     return <ErrorPage statusCode={404} />
   }
   return (
-    <Layout preview={preview}>
+    <Layout >
       <Container>
         <Header />
         {router.isFallback ? (
@@ -27,22 +28,22 @@ export default function Post({ post, morePosts, preview }) {
             <article className="mb-32">
               <Head>
                 <title>
-                  {post.title} | Next.js Blog Example with {CMS_NAME}
+                  {post.title} | Aratamotsu's Blog
                 </title>
                 <meta property="og:image" content={post.ogImage.url} />
               </Head>
               <PostHeader
                 title={post.title}
-                coverImage={post.coverImage}
                 date={post.date}
-                author={post.author}
               />
               <PostBody content={post.content} />
             </article>
           </>
         )}
       </Container>
+      <Footer />
     </Layout>
+
   )
 }
 
