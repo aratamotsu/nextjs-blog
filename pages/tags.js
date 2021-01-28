@@ -1,11 +1,9 @@
-import Layout, { siteTitle } from "../components/layout";
+import Layout from "../components/layout";
 import { getTags } from "../lib/api";
 import Header from '../components/header'
 import Container from '../components/container'
 import Head from "next/head";
 import ShowTags from '../components/show-tags'
-import Footer from '../components/footer'
-import Link from "next/link";
 
 export async function getStaticProps() {
   const allTags = getTags();

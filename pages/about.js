@@ -1,8 +1,6 @@
 import Container from '../components/container'
-import MoreStories from '../components/more-stories'
 import Layout from '../components/layout'
 import Head from 'next/head'
-import Footer from '../components/footer'
 import Header from '../components/header'
 
 export default function About() {

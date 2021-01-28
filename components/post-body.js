@@ -8,11 +8,6 @@ export default function PostBody({ content }) {
         className={markdownStyles['markdown']}
         dangerouslySetInnerHTML={{ __html: content }}
       />
-      <div className="mt-10">
-        <Link href="/">
-          <a className="hover:underline">← Back to home</a>
-        </Link>
-      </div>
     </div>
   )
 }

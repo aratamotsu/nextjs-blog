@@ -1,4 +1,3 @@
-import Avatar from '../components/avatar'
 import DateFormatter from '../components/date-formatter'
 import ShowTags from '../components/show-tags'
 import Link from 'next/link'
@@ -24,7 +23,7 @@ export default function PostPreview({
           <a className="hover:underline">{title}</a>
         </Link>
       </h3>
-      <div className="my-1">
+      <div className="mt-0.5 mb-2">
         <ShowTags tags={tags} />
       </div>
       

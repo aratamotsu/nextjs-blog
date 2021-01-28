@@ -3,7 +3,6 @@ import Container from "../../components/container"
 import Header from "../../components/header"
 import Head from 'next/head'
 import MoreStories from "../../components/more-stories"
-import nextPrev from "../../components/next-prev"
 import { getAllPosts } from '../../lib/api'
 
 

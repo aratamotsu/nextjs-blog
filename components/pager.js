@@ -8,7 +8,7 @@ const Pager = (props) => {
     nextPage = page + 1
   }
   return (
-    <div className="pager">
+    <div className="pager mb-10 text-lg">
       <span className="pager-item">
         {prevPage ? (
           <Link href={href} as={asCallback(prevPage)}>

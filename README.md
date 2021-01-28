@@ -1,2 +1,2 @@
 # ReadMe
-ブログです。
+[ブログ](https://aratamotsu.com)です。

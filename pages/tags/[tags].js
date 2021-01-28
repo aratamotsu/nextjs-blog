@@ -1,8 +1,6 @@
-import Layout, { siteTitle } from "../../components/layout";
+import Layout from "../../components/layout";
 import { getTags, getAssociatedPosts, getAllPosts } from "../../lib/api";
 import Head from "next/head";
-import Link from "next/link";
-import DateFormatter from '../../components/date-formatter'
 import Footer from '../../components/footer'
 import Header from '../../components/header'
 import Container from '../../components/container'

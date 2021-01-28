@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 import ErrorPage from 'next/error'
 import Container from '../../components/container'
 import PostBody from '../../components/post-body'
@@ -8,18 +9,20 @@ import Layout from '../../components/layout'
 import { getPostBySlug, getAllPosts } from '../../lib/api'
 import PostTitle from '../../components/post-title'
 import Head from 'next/head'
-import { CMS_NAME } from '../../lib/constants'
 import markdownToHtml from '../../lib/markdownToHtml'
 import Footer from '../../components/footer'
+import Share from '../../components/sns-share'
+import BackToHome from '../../components/back-to-home'
 
 export default function Post({ post, recentPosts, preview }) {
   const router = useRouter()
   if (!router.isFallback && !post?.slug) {
     return <ErrorPage statusCode={404} />
   }
+  const url = "https://aratamotsu.com/posts/" + post.slug
   return (
     <Layout >
-      <Container>
+      <Container >
         <Header />
         {router.isFallback ? (
           <PostTitle>Loading…</PostTitle>
@@ -37,9 +40,12 @@ export default function Post({ post, recentPosts, preview }) {
                 tag={post.tag}
               />           
               <PostBody content={post.content} />
+              <Share url={url} text={post.title}/>
+              <BackToHome />
             </article>
           </>
         )}
+
       </Container>
       <Footer recentPosts={recentPosts}/>
     </Layout>
