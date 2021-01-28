@@ -1,0 +1,197 @@
+---
+title: '分野別 初中級者が解くべき過去問精選100問 in python（全探索：ビット全探索）'
+excerpt: 'レッドコーダーが教える、競プロ・AtCoder上達のガイドライン【中級編：目指せ水色コーダー！】]という記事にある、初中級者が解くべき過去問精選100 をpython解いている。最初は、全探索：全列挙の4問！'
+date: '2020-01-12'
+tag: [Python, 競プロ]
+---
+
+# 分野別　初中級者が解くべき過去問精選 100 問 in python（全探索：全列挙）
+
+### はじめに
+[レッドコーダーが教える、競プロ・AtCoder上達のガイドライン【中級編：目指せ水色コーダー！】](https://qiita.com/e869120/items/eb50fdaece12be418faa)という記事にある、__分野別 初中級者が解くべき過去問精選100問__をpython解いている。問題を得ことよりは、どう考えるか、ということに重きを置いているつもりなので、メモがわりに載せておく。
+
+ノートブックは[ここ](https://github.com/aratamotsu/notes/blob/main/01_04_全探索：全列挙.ipynb)。Google Colabに置いてみたのは[こちら](https://colab.research.google.com/drive/1_92coTfesKPoRYW8lkjYUOTTBE6lWdE9?usp=sharing)
+
+最初は全探索：全列挙の4問！
+
+## 1. ITP1_7_B - How Many Ways?
+リンクは、[ここ](http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_7_B&lang=ja)
+
+### 考えたこと
+まあ全列挙。
+
+
+```python
+import sys
+def f(N, M):    
+    count = 0
+    for i in range(1, N+1):
+        for j in range(i+1, N+1):
+            for k in range(j+1, N+1):
+                if i+j+k == M:
+                    count += 1
+                
+    return count
+
+if __name__ == '__main__':
+    N, M = map(int, sys.stdin.readline().split())
+    print(f(N, M))
+```
+
+## 2. ABC 106 B - 105
+リンクは[ここ](https://atcoder.jp/contests/abc106/tasks/abc106_b)
+
+### 考えたこと
+約数の個数ってどうやって求めるんだっけ。素因数分解して、それぞれの素因数の指数+1を掛け算していけば約数の個数がでるか。
+素因数分解はそもそもどうやる？エラトステネスのふるいを、割り切れなくなるまで繰り返せばいいか。
+
+```python
+import sys
+from math import floor, sqrt
+
+N = int(sys.stdin.readline().strip())
+
+lis = []
+for num in range(1, N+1):
+    # 偶数を排除
+    if num % 2 == 0:
+        continue
+
+    # 約数の個数を設定
+    res = 1
+    tmp = num
+    for i in range(2, floor(sqrt(num))+1):
+        count = 0
+        # iで割り切れなくなるまで割る
+        while tmp % i == 0:
+            count += 1
+            tmp = tmp / i
+        
+        # 1回以上割れたら、約数の個数の算出のために掛け算
+        if count > 0:
+            res *= count+1
+
+    if res == 8:
+        lis.append(num)
+
+print(len(lis))
+```
+
+### 解いたあと
+与えられた問題に最適化するのであれば、対象が奇数であることから、2が約数に入ることはなく、`i`のrangeは3からでいい。また3, 5, ... と奇数のみを考えていって、`floor(sqrt(num))`以下の範囲だけ探索すればいい。書き換えたコードはこちら。なお、この方法を__試し割り法__というらしい。
+
+
+```python
+from math import floor, sqrt
+
+N = int(sys.stdin.readline().strip())
+lis = []
+for num in range(1, N+1):
+    # 偶数を排除
+    if num % 2 == 0:
+        continue
+
+    # 約数の個数を設定
+    res = 1
+    tmp = num
+    i = 3
+    while i <= floor(sqrt(num)):
+        # iで割り切れた回数をカウント
+        count = 0
+
+        # iで割り切れなくなるまで割る
+        while tmp % i == 0:
+            count += 1
+            tmp = tmp / i
+        
+        # 1回以上割れたら、約数の個数の算出のために掛け算
+        if count > 0:
+            res *= count+1
+        
+        # 次の奇数へ
+        i += 2
+        
+    if res == 8:
+        lis.append(num)
+
+print(len(lis))
+```
+
+あれ、待てよ、そもそも素因数分解なんてしなくても、与えられた数を割り切れるかどうか3から2で割った数まで確かめて、6とイコールか確認すればいいだけなのではないか？任意の数は、1とその数自身で割り切れるし、例外である1は、題意からして排除しても問題なさそうだし。
+
+```python
+import sys
+
+def count_yakusu(num):
+    # 1の場合は例外
+    if num == 1:
+        return 1
+    
+    # 割り切れるか判定していく
+    count = 0
+    for i in range(2, int(num / 2) + 1):
+        if num % i == 0:
+            count += 1
+            
+    # 1とその数自身を足してあげて返す。
+    return count + 2
+
+N = int(sys.stdin.readline().strip())
+lis = [count_yakusu(num) == 8 for num in range(1, N+1, 2)]
+print(sum(lis))
+```
+
+コードが短くなった。ついでに与えられた数の約数の個数を求める部分を関数化してあげた。
+
+（手計算で答えを求めることが前提の）数学の問題に対する解法と、プログラムで答えを求める解法は必ずしも一致しないという教訓を得た。
+
+## 3. ABC 122 B - ATCoder
+問題は[ここ](https://atcoder.jp/contests/abc122/tasks/abc122_b)
+
+### 考えたこと
+線形探索をするのだろうけど、その線形探索の回数をどれだけ少なくできるかが肝心か。
+
+文字列の長さと同じ大きさのリストを作り0で初期化する。先頭の文字から調べて、acgtに一致していれば、リストの一つ前の数字に1を足した数字に更新する。リストの最大値を取得すれば、それが最長のあcgt部分文字列になる。
+
+
+```python
+import sys
+
+def acgt_len(string):
+    lis = [0]*len(string)
+    acgt = "ACGT"
+    for i in range(len(string)):
+        if i == 1:
+            if string[i] in acgt:
+                lis[i] = 1
+
+        if string[i] in acgt:
+            lis[i] = lis[i-1] + 1
+        
+    return(max(lis))
+
+string = str(sys.stdin.readline().strip())
+print(acgt_len(string))
+```
+
+
+## 4. パ研合宿2019　第3日 C - カラオケ
+問題は[ここ](https://atcoder.jp/contests/pakencamp-2019-day3/tasks/pakencamp_2019_day3_c)
+
+うーん、特に考えることはなく、漏れのないように計算するだけだと思われ。
+
+
+```python
+import sys
+
+N, M = map(int,sys.stdin.readline().split()) 
+A = [list(map(int, sys.stdin.readline().split())) for l in range(N)]
+
+res = 0
+for i in range(M):
+    for j in range(i+1, M):
+        scores = [max(A[k][i], A[k][j]) for k in range(N)]
+        res = max(res, sum(scores))
+
+print(res)
+```

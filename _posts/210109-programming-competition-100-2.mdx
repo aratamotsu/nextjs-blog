@@ -1,0 +1,166 @@
+---
+title: '分野別 初中級者が解くべき過去問精選100問 in python（全探索：工夫）'
+excerpt: 'レッドコーダーが教える、競プロ・AtCoder上達のガイドライン【中級編：目指せ水色コーダー！】]という記事にある、初中級者が解くべき過去問精選100 をpython解いている。最初は、全探索：工夫して通り数を減らす全列挙の5問！'
+date: '2020-01-09'
+tag: [Python, 競プロ]
+---
+
+### はじめに
+[レッドコーダーが教える、競プロ・AtCoder上達のガイドライン【中級編：目指せ水色コーダー！】](https://qiita.com/e869120/items/eb50fdaece12be418faa)という記事にある、__分野別　初中級者が解くべき過去問精選 100 問__をpython解いている。
+
+今回は、全探索：工夫して通り数を減らす全列挙の5問！
+
+ノートブックは[ここ](https://github.com/aratamotsu/notes/blob/main/05-09_工夫した全探索.ipynb)。Google Colabに置いてみたのは[こちら](https://colab.research.google.com/drive/1WvVlr4oBnMdwiW_DYqjgJGQCx6TLyop_?usp=sharing)
+
+## 5. ABC 095 C - Half and Half
+問題は[ここ](https://atcoder.jp/contests/abc095/tasks/arc096_a)
+
+### 考えたこと
+問題を最適化問題のように書き下してみる。ABピザの枚数が決まれば、最低限購入しなければならないAピザ、Bピザの枚数が決まるので、ABピザの枚数を条件内で総当たり。ABピザは、偶数枚ないと役に立たないので、数字を若干置き換える。
+
+
+```python
+import sys
+
+A, B, C, X, Y = map(int, sys.stdin.readline().split())
+
+N = max(X, Y)
+
+# 価格を初期化
+res = 2**31
+
+for z in range(N+1):
+    # ABピザの枚数から、Aピザ、Bピザの枚数が決まる
+    x = max(0, X - z)
+    y = max(0, Y - z)
+    
+    # 最小の価格を保存しておく。
+    res = min(res, A*x + B*y + 2*C*z)
+    
+print(res)
+```
+
+## 6. 三井住友信託銀行プログラミングコンテスト 2019 D - Lucky PIN
+問題は[ここ](https://atcoder.jp/contests/sumitrust2019/tasks/sumitb2019_d)
+
+### 考えたこと
+$N$個のうち3個を選ぶなんてことをやっていると間に合わない。DPが使えそうな気がするが、実装が面倒そうなので別の手を考える。3桁目を決めたら、残りの2桁が何通り作り得るかというのを、全てのとり得る3桁目の数字について、数えてやれば早そう。
+
+具体的には、「1351245」という数字だった場合、まず最初に、「1」を取ると、残りの「351245」で2桁の数字を作ることになる。3桁目が「1」となる場合の数は、この残りの残りの「351245」で2桁の数字を作る場合の数に等しい。4桁目の1を3桁目にすると、残りの「245」で2桁の数字を作ることになり、少なくなってしまう。
+
+1を辞書にでも格納しておいて、次に「3」が3桁目になると考えて、残りの「51245」で2桁の数字を作ることを考える。これを繰り返せば、3桁目の数に応じて、それぞれ作ることのできる数の個数が求まる。
+
+同じように、2桁目についても、左から数字をとって、残りの数字のうち0~9までの数字が何個残されているかを計算してあげることで、何通りの数を作ることができるかが計算できる。これで約$100 \times N$回調べることになる。
+
+
+```python
+import sys
+
+N = int(sys.stdin.readline().strip())
+S = str(sys.stdin.readline().strip())
+
+keta3 = {}
+for i in range(N):
+    if S[i] not in keta3.keys():
+        # 3桁目の文字として初めて出現したら、残り2桁で作れる数を計算し辞書へ
+        keta2 = {}
+        for j in range(i+1, N):
+            if S[j] not in keta2.keys():
+                keta2[S[j]] = sum([str(k) in S[j+1:N] for k in range(10)])
+        
+        keta3[S[i]] = sum(keta2.values())
+    
+print(sum(keta3.values()))
+```
+
+## 7. JOI 2007 本選 3 - 最古の遺跡
+問題は[ここ](https://atcoder.jp/contests/joi2007ho/tasks/joi2007ho_c)
+
+### 考えたこと
+愚直に解くと$N^{3}$が必要になって間に合わなさそうな感じだが、改善する方法が思いつかん...
+
+
+```python
+import sys
+
+N = int(sys.stdin.readline().strip())
+xy = [map(int, sys.stdin.readline().split()) for _ in range(N)]
+x, y = [list(i) for i in zip(*xy)]
+xy_set = set(list(zip(x, y)))
+
+area = 0
+for i in range(N):
+    for j in range(i+1, N):
+        x1,y1 = x[i], y[i]
+        x2,y2 = x[j], y[j]
+        dx, dy = x2-x1, y2-y1
+        
+        if ((x1+dy, y1-dx) in xy_set) & ((x2+dy, y2-dx) in xy_set):
+            area = max(area, dx**2 + dy**2)
+        
+print(area)
+```
+
+### 解いてみて
+正方形の3,4個目の頂点の確認をsetで実装すれば、いくらかは早くなる。もっと上手い解法があるのかと思ったら、解き方自体はそのまんまで若干拍子抜けした。やはり（探索の実装を工夫する以外には）愚直に実装するしかないよね。上記のコードもギリギリ通ったし、何度もTLEして恥ずかしかった。
+
+## 8. Square869120Contest #6 B - AtCoder Markets
+問題は[ここ](https://atcoder.jp/contests/s8pc-6/tasks/s8pc_6_b)
+
+### 考えたこと
+厳密に証明とかを考えようとすると面倒ではあるけれど、なんとなくの予想が通用する感じ。$A_i \leq B_i$なので入口は$\{A_i\}$近く、出口は$\{B_i\}$の近くになりそう。そして、たどるルートは、全ての$i$に対して、入口 $\rightarrow A_i \rightarrow B_i \rightarrow $ 出口というルートで問題なさそう。この場合、考えるべき距離は$|I - A_i| + |A_i - B_i| + |B_i - O|$となり、入口と$\{A_i\}$、出口と$\{B_i\}$との関係をそれぞれ独立に考えればいい。
+
+まず、$N=1$を考えると、入口は$A_0$、出口は$B_0$と同じ位置が最短となる。
+
+次に$N=2$の場合、$A_1 < A_2$と仮定して、$I < A_1$や$A_2 < I$の場合は、それぞれ$I$を$A_1$、$A_2$に近づけることで、距離を小さくできる。実際、$A_1 \leq I \leq A_2$であればいい。出口についても同様。
+
+$N=3$の場合、$A_1 < A_3 < A_2$と仮定すると、$A_1 \leq I \leq A_2$の中で、$I = A_3$とすればいい。
+
+一般化していくと、入口と出口は、それぞれ$\{A_i\}$と$\{B_i\}$の中央値とすればよい。$\{A_i\}$と$\{B_i\}$をソートして添字を$0$から付け直したとして、
+- $N$が奇数の場合、入口: $A_{(N-1)/2}$、出口: $B_{(N-1)/2}$
+- $N$が偶数の場合、入口; $A_{N/2}$、出口: $B_{N/2}$
+と選べばよい。
+
+
+```python
+import sys
+
+n = int(sys.stdin.readline().strip())
+ab = [map(int, sys.stdin.readline().split()) for _ in range(n)]
+a, b = [list(i) for i in zip(*ab)]
+
+a.sort()
+b.sort()
+start = a[int(n/2)]
+end = b[int(n/2)]
+dist = 0
+for i in range(n):
+    dist += abs(start-a[i])+abs(a[i]-b[i])+abs(end-b[i])
+
+print(dist)
+```
+
+## JOI 2008 予選 4 - 星座探し
+問題は[ここ](https://atcoder.jp/contests/joi2008yo/tasks/joi2008yo_d)
+
+### 考えたこと
+星座からひとつ点をとって、写真に含まれている点$i$と座標を合わせる。その移動を星座の他の点$j$にも行って、他の点全てが写真に含まれていればその移動を返して終了。星座の中から一つ点を選んで固定して考えるのことができればスッキリする。
+
+
+```python
+import sys
+
+n = int(sys.stdin.readline().strip())
+star = [tuple(map(int, sys.stdin.readline().split())) for _ in range(n)]
+m = int(sys.stdin.readline().strip())
+pic = [tuple(map(int, sys.stdin.readline().split())) for _ in range(m)]
+set_pic = set(pic)
+
+x0, y0 = star[0]
+
+for i in range(m):
+    dx, dy = tuple([a-b for a,b in zip(pic[i], (x0, y0))])
+    
+    if all((star[j][0] + dx, star[j][1] + dy) in set_pic for j in range(1, n)):
+        print(dx, dy)
+```

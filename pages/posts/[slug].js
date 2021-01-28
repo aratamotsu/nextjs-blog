@@ -12,7 +12,7 @@ import { CMS_NAME } from '../../lib/constants'
 import markdownToHtml from '../../lib/markdownToHtml'
 import Footer from '../../components/footer'
 
-export default function Post({ post, morePosts, preview }) {
+export default function Post({ post, recentPosts, preview }) {
   const router = useRouter()
   if (!router.isFallback && !post?.slug) {
     return <ErrorPage statusCode={404} />
@@ -30,25 +30,26 @@ export default function Post({ post, morePosts, preview }) {
                 <title>
                   {post.title} | Aratamotsu's Blog
                 </title>
-                <meta property="og:image" content={post.ogImage.url} />
               </Head>
               <PostHeader
                 title={post.title}
                 date={post.date}
-              />
+                tag={post.tag}
+              />           
               <PostBody content={post.content} />
             </article>
           </>
         )}
       </Container>
-      <Footer />
+      <Footer recentPosts={recentPosts}/>
     </Layout>
 
   )
 }
 
 export async function getStaticProps({ params }) {
-  const post = getPostBySlug(params.slug, [
+  const slug = params.slug
+  const post = getPostBySlug(slug, [
     'title',
     'date',
     'slug',
@@ -56,14 +57,28 @@ export async function getStaticProps({ params }) {
     'content',
     'ogImage',
     'coverImage',
+    'tag'
   ])
+  
   const content = await markdownToHtml(post.content || '')
+
+  const allPosts = getAllPosts([
+    'title',
+    'date',
+    'slug',
+    'author',
+    'coverImage',
+    'excerpt',
+    'tag'
+  ]);
+  const recentPosts = allPosts.slice(0,5)
 
   return {
     props: {
+      recentPosts,
       post: {
         ...post,
-        content,
+        content,        
       },
     },
   }

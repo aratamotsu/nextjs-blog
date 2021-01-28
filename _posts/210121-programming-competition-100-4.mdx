@@ -1,0 +1,178 @@
+---
+title: '分野別 初中級者が解くべき過去問精選100問 in python（全探索：順序列探索）'
+excerpt: 'レッドコーダーが教える、競プロ・AtCoder上達のガイドライン【中級編：目指せ水色コーダー！】]という記事にある、初中級者が解くべき過去問精選100 をpython解いている。今回は、全探索：順序列探索の3問！'
+date: '2020-01-12'
+tag: [Python, 競プロ]
+---
+
+## はじめに
+[レッドコーダーが教える、競プロ・AtCoder上達のガイドライン【中級編：目指せ水色コーダー！】](https://qiita.com/e869120/items/eb50fdaece12be418faa)という記事にある、__分野別初中級者が解くべき過去問精選100問__をpython解いている。
+
+今回は、全探索：順序列探索の3問！
+
+Google Colabに置いたのは[こちら](https://colab.research.google.com/drive/1rh8za6hTbt6RGk8IwDhKDC_UzpmH7hkc?usp=sharing)
+
+## 15. ABC 145 C - Average Length
+問題は[ここ](https://atcoder.jp/contests/abc145/tasks/abc145_c)
+
+### 考えたこと
+全ての順列に対して、距離を足し上げて平均を取るだけ？数値誤差は問題ないだろうか。
+
+```python
+import sys
+from itertools import permutations
+
+N = int(sys.stdin.readline().strip())
+xy = [map(int, sys.stdin.readline().split()) for _ in range(N)]
+x, y = [tuple(i) for i in zip(*xy)]
+
+# 2次元ベクトルのユークリッドノルムを計算する関数
+def eu_dist(a, b):
+    from math import sqrt
+    return sqrt((a[0]-b[0])**2 + (a[1]-b[1])**2)
+
+lis = list(permutations(list(range(N))))
+
+total_dist = 0
+for order in lis:
+    for i in range(N-1):
+        total_dist += eu_dist((x[order[i]],y[order[i]]), (x[order[i+1]], y[order[i+1]]))
+        
+mean_dist = total_dist / len(lis)
+
+print(mean_dist)
+```
+
+### 解いたあと
+実際のところ、問題の対称性から__全ての経路の平均 = 2つ町の距離の平均\*なんか$N$に依存する数__になりそう。$N$に依存する数を求めたい。
+
+全ての経路は$N!$あって、そのうち、ある2つの町を連続して通る経路は$N-1!$になっている。2つの町にも順序があるので、ある2つの町のを繋ぐ経路が出現するのは$2 \times (N-1)!$となる。よって、なんか$N$に依存する数=$N! / (2 \times (N-1)!) = N/2$とすればいい。これなら計算量は$O(N^2)$なので断然早い。
+
+## 16. ABC 150 C - Count Order
+問題は[ここ](https://atcoder.jp/contests/abc150/tasks/abc150_c)
+
+### 考えたこと
+一瞬$N$桁の$N$進数における、2つの数値の差を出すのかとおもったが、順列は数字を重複して作ることはできないので、違った。順列の作り方が重複を許すのであれば、また違った解き方ができそう。順列を作って二分探索といったところでしょうか。
+
+```python
+import sys
+import bisect 
+from itertools import permutations
+
+N = int(sys.stdin.readline().strip())
+a = list(map(int, sys.stdin.readline().split()))
+b = list(map(int, sys.stdin.readline().split()))
+
+def make10digit(nums):
+    num = 0
+    for i in range(len(nums)-1, -1, -1):
+        num += 10**(len(nums)-1-i) * nums[i]
+    return num
+    
+def lis2int(lis):
+    new_list = []
+    for nums in lis:
+        new_list.append(make10digit(nums))
+    return new_list
+    
+lis = list(permutations(list(range(1, N+1))))
+
+# 整数に変換する
+lis_int = lis2int(lis)
+a_int = make10digit(a)
+b_int = make10digit(b)
+
+# 二分探索する
+a_index = (bisect.bisect_left(lis_int, a_int))
+b_index = (bisect.bisect_left(lis_int, b_int))
+
+print(abs(b_index-a_index))
+```
+
+### 解いたあと
+`[1, 2, 3]`というリストから`123`という整数を生成してくれる関数で用意されたいないのかな。10進数を前提として、自分で書いたけど...まあ競プロとか意外での需要があるとはあまり多えないのだけどね。
+
+## 17. ALDS_13_A - 8 クイーン問題
+問題は[ここ](http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ALDS1_13_A&lang=ja)
+
+### 考えたこと
+最初は血迷って再帰関数とかで実装できないかなと考えたのだけど、まあどう考えても最初に条件と与えられたクイーンの座標を使って探索範囲を狭めた方がやりやすいだろう。
+クイーンの動き方から、正解となる配置において、同じ$x$座標、$y$座標を持っているクイーンは存在しない。よって、すでに置かれているクイーンの$x$座標、$y$座標を除いた$x$座標, $y$座標の全てのペアについて、残りの斜めの条件を満たすかどうかを調べれば十分。
+
+```python
+import sys
+from itertools import permutations
+
+N = int(sys.stdin.readline().strip())
+xy = [map(int, sys.stdin.readline().split()) for _ in range(N)]
+x, y = [list(i) for i in zip(*xy)]
+
+# まだ配置されていない座標
+x_list = [i for i in range(8) if i not in x]
+y_list = [i for i in range(8) if i not in y]
+
+for orders in permutations(range(8-N)):
+    # コピーをとっておく
+    x_c = x.copy()
+    y_c = y.copy()
+    for i in range(len(orders)):
+        # 新たは配置を追加して８つのクイーンの座標を作成
+        x_c.append(x_list[i])
+        y_c.append(y_list[orders[i]])
+
+    # 斜めの条件を確かめる
+    xpy = [i+j for (i, j) in zip(x_c,y_c)]
+    xmy = [i-j for (i, j) in zip(x_c,y_c)]
+    
+    # 斜めの条件を満たさない場合、リストに重複が出るので、setとlengthが異なることを利用して確認
+    if (len(xpy) - len(set(xpy)) == 0) and (len(xmy)-len(set(xmy)) == 0):
+        # 条件を満たすものが見つかったら、ループから抜ける。
+        break
+        
+for i in range(8):
+    for j in range(8):
+        if (i, j) in set(zip(x_c, y_c)):
+            print("Q", end="")
+        else:
+            print(".", end="")
+    # 各行で改行してあげる用  
+    print()
+```
+
+### 解いたあと
+残りのクイーンの配置のパターンを生成するときに、$x$座標を固定して、$y$座標をpermutationすればいいということに気がつくのにちょっと時間がかかってしまい、衰えを感じざるを得ない。
+
+疑問に思ったのは。一般の$N$-クイーン問題は解を持つのだろうか。$N=1$のときは解あり。$N=2$のときは解なし。$N=3$のときは解なし。一般の$N$において解があれば、一つ見つけて、解がなければ、ないと教えてくれるコードに書き換えてみよう。
+
+```python
+def Queen(N):
+    from itertools import permutations
+    for orders in permutations(range(N)):
+        x = list(range(N))
+        y = list(orders)
+
+        # 斜めの条件を確かめる
+        xpy = [i+j for (i, j) in zip(x,y)]
+        xmy = [i-j for (i, j) in zip(x,y)]
+
+        # 斜めの条件を満たさない場合、リストに重複が出るので、setとlengthが異なることを利用して確認
+        if (len(xpy) - len(set(xpy)) == 0) and (len(xmy)-len(set(xmy)) == 0):
+            # 条件を満たすものが見つかったら、プリントしてreturn
+            for i in range(N):
+                for j in range(N):
+                    if (i, j) in set(zip(x, y)):
+                        print("Q", end="")
+                    else:
+                        print(".", end="")
+                # 各行で改行してあげる用
+                print()
+
+            return
+    # 見つからなければ-1を返す
+    return -1
+
+N = 7
+Queen(N)
+```
+
+遅い...$N=12$まで確かめたところ。解を持たないのは、$N=2, 3$のみだった。解を持たないのは$N=2, 3$だけらしい。

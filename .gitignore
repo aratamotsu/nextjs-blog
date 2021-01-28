@@ -12,6 +12,9 @@
 /.next/
 /out/
 
+# draft
+/draft
+
 # production
 /build
 

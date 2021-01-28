@@ -1,0 +1,181 @@
+---
+title: '分野別 初中級者が解くべき過去問精選100問 in python（全探索：ビット全探索）'
+excerpt: 'レッドコーダーが教える、競プロ・AtCoder上達のガイドライン【中級編：目指せ水色コーダー！】]という記事にある、初中級者が解くべき過去問精選100 をpython解いている。今回は、全探索：ビット全探索の5問！'
+date: '2020-01-12'
+tag: [Python, 競プロ]
+---
+
+## はじめに
+[レッドコーダーが教える、競プロ・AtCoder上達のガイドライン【中級編：目指せ水色コーダー！】](https://qiita.com/e869120/items/eb50fdaece12be418faa)という記事にある、__分野別　初中級者が解くべき過去問精選 100 問__をpython解いている。
+
+今回は、全探索：ビット全探索の5問！
+
+Google Colabに置いたのは[こちら](https://colab.research.google.com/drive/1gULeuL1jwRn-k25YFxJP511SXsFaJuQO?usp=sharing)
+
+## 10. ALDS_5_A - 総当たり
+問題は[ここ](http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ALDS1_5_A&lang=ja)
+
+### 考えたこと
+ただのbit探索。いろいろと方法はるけれど、問題のカテゴリ通りbit探索で解いてみる。
+
+```python
+import sys
+
+N = int(sys.stdin.readline().strip())
+A =  list(map(int, sys.stdin.readline().split()))
+M = int(sys.stdin.readline().strip())
+Q =  list(map(int, sys.stdin.readline().split()))
+
+for k in range(M):
+    # フラグの初期化
+    flag = "no"
+    
+    for i in range(2**N):
+        res = 0
+        for j in range(N):
+            # j番目のbitが1だったら足していく
+            if (i >> j) & 1:
+                 res += A[j]
+
+        if res == Q[k]:
+            # 見つかったらフラグを更新しforループを抜ける
+            flag = "yes"
+            break
+    
+    # 結果を表示
+    print(flag)
+```
+
+## 11. ABC 128 C - Switches
+問題は[ここ](https://atcoder.jp/contests/abc128/tasks/abc128_c)
+
+### 考えたこと
+全てのスイッチの場合において、全ての電球が点灯する場合を求めればいい。最初の標準入力をどう読み取るかで一瞬悩む。
+
+```python
+import sys
+N,M = tuple(map(int, sys.stdin.readline().split()))
+k = []
+s = {}
+for i in range(M):
+    tmp = list(map(int, sys.stdin.readline().split()))
+    k.append(tmp[0])
+    s[i] = tmp[1:]
+p =  list(map(int, sys.stdin.readline().split()))
+
+count = 0
+for j in range(2**N):
+    flag = True
+    for i in range(M):
+        on_sw = sum([(j >> (s[i][l]-1) & 1) for l in range(k[i])])
+        
+        # オンにならない電球が見つかったらループを抜ける
+        if on_sw % 2 != p[i]:
+            flag = False
+            break
+            
+    if flag:
+        count += 1
+        
+print(count)
+```
+
+## 12. ABC 002 D - 派閥
+問題は[ここ](https://atcoder.jp/contests/abc002/tasks/abc002_4)
+
+### 考えたこと
+なんか工夫のしがいがありそうな気もしつつ、思いつかない。問題のサイズ的には無理矢理解いてしまっても間に合いそうなので、試してみる。人のラベルが1始まりなところが注意
+
+
+```python
+import sys
+import itertools
+
+N,M = tuple(map(int, sys.stdin.readline().split()))
+pairs = set(tuple(map(int, sys.stdin.readline().split())) for _ in range(M))
+#set_pairs = set(pairs)
+
+size = 1
+for i in range(2**N):
+    # j番目のbitが1だったら足していく
+    gp = [j+1 for j in range(N) if (i >> j) & 1]
+    
+    # グループの全てのコンビを生成
+    combi = set(itertools.combinations(gp, 2))
+    
+    if combi <= pairs:
+        # ペアの部分集合であれば、派閥のサイズを返す。
+        if size < len(gp):
+            size = len(gp)
+                
+print(size)
+```
+
+### 解いたあと
+この問題は、[最大クリーク問題](https://ja.wikipedia.org/wiki/最大クリーク問題)といって、NP困難だそうです。工夫のしがいがありそうとか適当なことを言ってはいけない。
+
+## 13. JOI 2008 予選 5 - おせんべい
+
+問題は[ここ](https://atcoder.jp/contests/joi2008yo/tasks/joi2008yo_e)
+
+### 考えたこと
+真面目に10分くらい悩んだ。ヒントは確かにヒントだった。どこをbit探索するか、というところが問題。
+
+ヒント：ある列で生産できるせんべいの数 = max(その列で表の数、その列で裏の数)
+
+```python
+import sys
+import numpy as np
+
+R, C = tuple(map(int, sys.stdin.readline().split()))
+A = np.array([list(map(int, sys.stdin.readline().split())) for _ in range(R)])
+
+semb = 0
+for i in range(2**R):
+    A_t = A^np.array([[i>>j&1 for j in range(R)]]).T
+    
+    x = A_t.sum(axis=0)
+    res = sum(np.maximum(x, R-x))
+    
+    semb = max(semb, res)
+    
+print(semb)
+```
+
+#### 解いた後
+なぜか実装で非常に苦労した。愚直に書き過ぎたら遅過ぎたし、何故か3と5WAになってしまい、バグとりがなぜかすすまず...最終的にはnumpyを使ってしまった。
+
+## 14. Square869120Contest #4 B - Buildings are Colorful!
+問題は[ここ](https://atcoder.jp/contests/s8pc-4/tasks/s8pc_4_b)
+
+### 考えたこと
+左から最大値を更新していく。
+
+```python
+import sys
+import itertools
+
+N, M = tuple(map(int, sys.stdin.readline().split()))
+A = list(map(int, sys.stdin.readline().split()))
+
+res = M * 10**9 + 1
+
+for towers in itertools.combinations(range(1, N), M-1):
+    cost = 0
+    max_c = 0
+    for i in range(N):
+        if i in towers:
+            if A[i] <= max_c:
+                cost += max_c + 1 - A[i]
+                max_c += 1
+        if A[i] > max_c:
+            max_c = A[i]
+
+    res = min(res, cost)
+
+print(res)
+
+```
+
+### 解いた後
+最終的に求める最小金額の初期値が小さかったようで、2時間ほど溶かしてしまった。悲しい。入力が意地悪すぎたが、確かに問題文には条件が書いてある...しっかり読んで実装しなかった自分が悪いか。

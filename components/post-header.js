@@ -2,14 +2,18 @@ import Avatar from '../components/avatar'
 import DateFormatter from '../components/date-formatter'
 import CoverImage from '../components/cover-image'
 import PostTitle from '../components/post-title'
+import ShowTags from '../components/show-tags'
 
-export default function PostHeader({ title, date}) {
+export default function PostHeader({ title, date, tag}) {
   return (
     <>
-      <PostTitle>{title}</PostTitle>
-      <div className="max-w-3xl mx-auto">
-        <div className="mb-6 text-lg">
+      <div className="max-w-4xl mx-auto">
+        <div className="mb-2 text-lg">
           <DateFormatter dateString={date} />
+        </div>
+        <PostTitle>{title}</PostTitle>
+        <div>
+          <ShowTags tags={tag} />
         </div>
       </div>
     </>

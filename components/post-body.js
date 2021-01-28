@@ -3,18 +3,16 @@ import Link from 'next/link'
 
 export default function PostBody({ content }) {
   return (
-    <div className="max-w-3xl mx-auto">
+    <div className="max-w-4xl mx-auto">
       <div
         className={markdownStyles['markdown']}
         dangerouslySetInnerHTML={{ __html: content }}
       />
-      <div>
+      <div className="mt-10">
         <Link href="/">
-          <a>← Back to home</a>
+          <a className="hover:underline">← Back to home</a>
         </Link>
       </div>
     </div>
-
-
   )
 }
