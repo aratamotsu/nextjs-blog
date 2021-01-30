@@ -31,6 +31,8 @@ export default function Footer({ recentPosts }) {
                 <Link href="/about">
                   <a className="font-medium">Aratamotsu</a>
                 </Link>
+                <a href="https://twitter.com/aratamotsu?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-screen-name="false" data-show-count="false">Follow</a>
+                <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
                 <p className="mt-1">院：物理（D）→ 社会人3年目。統計学や計量経済学を勉強している実務者／事務方。 トリックスターと言われたい。競プロはじめました。</p>
               </div>
             </div>

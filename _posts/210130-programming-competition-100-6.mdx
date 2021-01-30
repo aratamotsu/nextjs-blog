@@ -1,0 +1,226 @@
+---
+title: '分野別 初中級者が解くべき過去問精選100問 in python （深さ優先探索）'
+excerpt: 'レッドコーダーが教える、競プロ・AtCoder上達のガイドライン【中級編：目指せ水色コーダー！】という記事にある、分野別　初中級者が解くべき過去問精選 100 問をpython解いている。今回は、深さ優先探索の4問！'
+date: '2021-01-30'
+tag: [Python, 競プロ]
+---
+
+## はじめに
+[レッドコーダーが教える、競プロ・AtCoder上達のガイドライン【中級編：目指せ水色コーダー！】](https://qiita.com/e869120/items/eb50fdaece12be418faa)という記事にある、**分野別　初中級者が解くべき過去問精選 100 問**をpython解いている。
+
+今回は、深さ優先探索の4問！
+
+Google Colabに置いたのは[こちら](https://colab.research.google.com/drive/1pj5a9llHOtwe6HY6jYuhRnvC_RjYGXqG?usp=sharing)
+
+
+## 24. Depth First Search
+問題は[ここ](http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ALDS1_11_B&lang=ja)
+
+### 考えたこと
+発見時刻は行きかけ順、終了時刻は帰りがけ順に対応している。
+
+```python
+import sys
+from collections import deque
+
+N, M = map(int, sys.stdin.readline().split())
+G = [[] for _ in range(N)] # set()を{}にすると空の辞書になってしまうので注意
+
+for _ in range(M):
+    i, j = map(int, sys.stdin.readline().split())
+    G[i].append(j)
+
+# 行き先の頂点をソート
+for x in G:
+    x.sort
+
+seen = [-1 for _ in range(N)]
+fin = [-1 for _ in range(N)]
+c_time = 1
+todo = deque()
+
+def dfs(G, v):
+    global c_time
+    
+    # 行きがけの記録
+    seen[v] = c_time
+    c_time += 1
+    
+    for v_next in G[v]:
+        # v_nextが探索済なら飛ばす
+        if seen[v_next] > -1:
+            continue
+        dfs(G, v_next)
+    
+    # 帰りがけの記録
+    fin[v] = c_time
+    c_time += 1
+
+for v in range(N):
+    # 既に発見されていた場合
+    if seen[v] != -1:
+        continue
+    dfs(G, v)
+
+for v in range(N):
+    print(v, seen[v], fin[v]) 
+
+```
+
+### 解いた後
+pythonの参照とかについて、もう少し理解しないといけない。
+
+## 25. How Many Islands?
+問題は[ここ](http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=1160&lang=jp)
+
+### 考えたこと
+連結成分の個数を求める。標準入力の受け取りが面倒なので手抜き。
+
+
+```python
+import sys
+N, M = map(int, sys.stdin.readline().split())
+G = [list(map(int, sys.stdin.readline().split())) for _ in range(M)] 
+seen = [[-1]*N for _ in range(M)]
+
+def rec(G, a, b):
+    if G[a][b] == 0:
+        return
+    if seen[a][b] != -1:
+        return
+    
+    seen[a][b] = count
+    
+    # コードが酷すぎる
+    if a+1 < M:
+        rec(G, a+1, b)
+    if b+1 < N:
+        rec(G, a, b+1)
+    if a-1 >= 0:
+        rec(G, a-1, b)
+    if b-1 >= 0:
+        rec(G, a, b-1)
+    if (a+1 < M) and (b+1 < N):
+        rec(G, a+1, b+1)
+    if (a-1 >=0) and (b+1 < N):
+        rec(G, a-1, b+1)
+    if (a+1 < M) and (b-1 >= 0):
+        rec(G, a+1, b-1)
+    if (a-1 >=0) and (b-1 >= 0):
+        rec(G, a-1, b-1)
+         
+count = 0
+for i in range(M):
+    for j in range(N):
+        if G[i][j] == 0:
+            continue
+        if seen[i][j] != -1:
+            continue
+            
+        count += 1
+        
+        rec(G, i, j)
+
+print(count)
+```
+
+## 26. ABC 138 D - Ki
+問題は[ここ](https://atcoder.jp/contests/abc138/tasks/abc138_d)
+
+### 考えたこと
+与えられた頂点から探索して、部分木を探索していく。何度も何度も探索をすると時間が足りないっぽいので、各頂点に点数$x$を割り振っておいて、上からしたに累積和っぽいことをして足していくと、探索は1回ですむ。問題文を愚直に読んだときに作られる問題に関する表象と、アルゴリズム的に効率の良い問題の表象が異なっていて、問題の捉え方を鍛える上でいい問題だと思った。
+
+なんやかんやで上手くいかぬ。もしかして、$a$, $b$を繋ぐ辺って、1を根としたときに、必ずしも$a \rightarrow b$となるわけではないのか？確かによく読んでみるとそんな条件は書いていない...無向グラフとしてグラフを作り、親かどうかの判断を入れてあげる。
+
+再帰で書くとREされるので、スタックで書き直しでAC。なんでREなのか調べたく入力のテキストをDLしてきて試したところ、`sys.setrecursionlimit()`周辺の話らしい。割と本質でないところで時間を溶かしてしまい若干凹む。アルゴリズムよりpythonの知識が足りない...
+
+```python
+import sys
+from collections import deque
+
+N, Q = map(int, sys.stdin.readline().split())
+G = [[] for _ in range(N+1)] 
+for _ in range(N-1):
+    i, j = map(int, sys.stdin.readline().split())
+    G[i].append(j)
+    G[j].append(i)
+
+count = [0]*(N+1)
+for _ in range(Q):
+    p, x = map(int, sys.stdin.readline().split())
+    count[p] += x
+
+que = deque()
+que.append(1)
+seen = [False for _ in range(N+1)]
+
+while que:
+    v = que.pop()
+    seen[v] = True
+    
+    for v_next in G[v]:
+        if seen[v_next]:
+            continue
+        count[v_next] += count[v]
+        que.append(v_next)
+    
+for j in range(1, N+1):
+    print(count[j], end=" ")
+```
+
+
+## 27. JOI 2009 予選 4 - 薄氷渡り
+問題は[ここ](https://atcoder.jp/contests/joi2009yo/tasks/joi2009yo_d)
+
+### 考えたこと
+深さ優先探索？いや、それだと問題26より簡単になるし、木構造でもないし。一番長い経路を求めるにはどうすればいいのか。
+
+
+```python
+import sys
+
+m = int(sys.stdin.readline().strip())
+n =  int(sys.stdin.readline().strip())
+
+G = [list(map(int, sys.stdin.readline().split())) for _ in range(n)] 
+
+max_d = 1
+
+def rec(G, i, j, depth):
+    # 発見済みor海ならばすぐ戻る
+    if (seen[i][j] != -1) | (G[i][j]==0):
+        return 
+    
+    # 行きがけ処理
+    seen[i][j] = depth
+    
+    global max_d
+    max_d = max(max_d, depth)
+
+    # 再帰
+    if i+1 < n:
+        rec(G, i+1, j, depth+1)
+    if i-1 >= 0:
+        rec(G, i-1, j, depth+1)
+    if j+1 < m:
+        rec(G, i, j+1, depth+1)
+    if j-1 >= 0:
+        rec(G, i, j-1, depth+1)
+        
+    # 戻りがけ処理：seenをリセットしてあげる
+    seen[i][j] = -1
+    
+for i in range(n):
+    for j in range(m):
+        seen = [[-1]*m for _ in range(n)]
+        
+        if G[i][j] == 0:
+            continue
+            
+        rec(G, i, j, 1)
+    
+print(max_d)
+```
+
+### 解いたあと
+最長の経路を求めるためには、探索が一回終了したらOKなのではなく、戻りがけの処理のときに、探索完了フラグをリセットしてやる必要がある。そうしないと、ある種の迂回路みたいなものが存在して、最初の探索ルートが最適でなかった場合、最長の経路が求まらない。
