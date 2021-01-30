@@ -8,11 +8,11 @@ import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 export default function BackToHome() {
   return (
     <div className="max-w-4xl mx-auto mt-10">
-      <Button color="primary" variant="outlined" startIcon={<ArrowBackIosIcon/>}>
-        <Link href="/">
-        <a>Back to home</a>
-        </Link>
-      </Button>
+      <Link href="/" passHref>
+        <Button color="primary" variant="outlined" startIcon={<ArrowBackIosIcon/>}>
+          <a>Back to home</a>
+        </Button>
+      </Link>
     </div>
   )
 }

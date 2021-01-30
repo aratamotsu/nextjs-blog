@@ -23,11 +23,11 @@ export default function Index({ allPosts }) {
           <div className="max-w-4xl mx-auto mb-12">
             <MoreStories posts={morePosts} h1Info='Articles'/>
           <div className="mt-10 ml-auto">
-            <Button color="default" variant="outlined">
-              <Link href="archive/2">
+            <Link href="/archive/2" passHref>
+              <Button color="default" variant="outlined">
                 <a>Archives</a>
-              </Link>
-            </Button>
+              </Button>
+            </Link>
           </div>
           </div>
           

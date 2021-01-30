@@ -15,11 +15,11 @@ const Pager = (props) => {
     <div className="pager mb-10 text-lg">
       <span className="pager-item">
         {prevPage ? (
-          <Button color="primary" variant="outlined" startIcon={<ArrowBackIosIcon/>}>
-          <Link href={href} as={asCallback(prevPage)}>
-            <a>{prevPage}</a>
+          <Link href={href} passHref as={asCallback(prevPage)}>
+            <Button color="primary" variant="outlined">
+              <a>{prevPage}</a>
+            </Button>
           </Link>
-          </Button>
         ) : ``}
        </span>
         <Button variant="outlined" disabled >
@@ -27,11 +27,11 @@ const Pager = (props) => {
         </Button>
       <span className="pager-item">
         {nextPage ? (
-          <Button color="primary" variant="outlined" endIcon={<ArrowForwardIosIcon/>}>
-          <Link href={href} as={asCallback(nextPage)}>
+          <Link href={href} passHref as={asCallback(nextPage)}>
+          <Button color="primary" variant="outlined">
             <a>{nextPage}</a>
-          </Link>
           </Button>
+          </Link>
         ) : ``}
       </span>
       <style jsx>{`
