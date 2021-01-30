@@ -8,7 +8,7 @@ import { getAllPosts } from '../../lib/api'
 
 import Pager from "../../components/pager"
 
-const COUNT_PER_PAGE = 10
+const COUNT_PER_PAGE = 4
 
 export default function Index({ selectedPosts, page, total, perPage }) {
   // const heroPost = allPosts[0]

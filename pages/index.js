@@ -6,6 +6,7 @@ import Head from 'next/head'
 import Footer from '../components/footer'
 import Header from '../components/header'
 import Link from 'next/link'
+import { Button } from '@material-ui/core';
 
 export default function Index({ allPosts }) {
   // const heroPost = allPosts[0]
@@ -21,10 +22,12 @@ export default function Index({ allPosts }) {
           <Header />
           <div className="max-w-4xl mx-auto mb-12">
             <MoreStories posts={morePosts} h1Info='Articles'/>
-          <div className="hover:underline mt-10 ml-auto">
-            <Link href="archive/2">
-              <a>Archive</a>
-            </Link>
+          <div className="mt-10 ml-auto">
+            <Button color="default" variant="outlined">
+              <Link href="archive/2">
+                <a>Archives</a>
+              </Link>
+            </Button>
           </div>
           </div>
           

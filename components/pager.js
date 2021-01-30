@@ -1,3 +1,7 @@
+
+import { Button } from '@material-ui/core';
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import Link from "next/link"
 
 const Pager = (props) => {
@@ -11,17 +15,23 @@ const Pager = (props) => {
     <div className="pager mb-10 text-lg">
       <span className="pager-item">
         {prevPage ? (
+          <Button color="primary" variant="outlined" startIcon={<ArrowBackIosIcon/>}>
           <Link href={href} as={asCallback(prevPage)}>
             <a>{prevPage}</a>
           </Link>
+          </Button>
         ) : ``}
-      </span>
-      <span className="pager-item">{page}</span>
+       </span>
+        <Button variant="outlined" disabled >
+          <span className="pager-item">{page}</span>
+        </Button>
       <span className="pager-item">
         {nextPage ? (
+          <Button color="primary" variant="outlined" endIcon={<ArrowForwardIosIcon/>}>
           <Link href={href} as={asCallback(nextPage)}>
             <a>{nextPage}</a>
           </Link>
+          </Button>
         ) : ``}
       </span>
       <style jsx>{`
