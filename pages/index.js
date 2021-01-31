@@ -24,8 +24,8 @@ export default function Index({ allPosts }) {
             <MoreStories posts={morePosts} h1Info='Articles'/>
           <div className="mt-10 ml-auto">
             <Link href="/archive/2" passHref>
-              <Button color="default" variant="outlined">
-                <a>Archives</a>
+              <Button color="default" variant="outlined" component='a'>
+                Archives
               </Button>
             </Link>
           </div>

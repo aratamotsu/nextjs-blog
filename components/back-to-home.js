@@ -9,8 +9,8 @@ export default function BackToHome() {
   return (
     <div className="max-w-4xl mx-auto mt-10">
       <Link href="/" passHref>
-        <Button color="primary" variant="outlined" startIcon={<ArrowBackIosIcon/>}>
-          <a>Back to home</a>
+        <Button color="primary" variant="outlined" startIcon={<ArrowBackIosIcon/>} component='a'>
+          Back to home
         </Button>
       </Link>
     </div>
