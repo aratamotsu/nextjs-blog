@@ -16,8 +16,8 @@ const Pager = (props) => {
       <span className="pager-item">
         {prevPage ? (
           <Link href={href} passHref as={asCallback(prevPage)}>
-            <Button color="primary" variant="outlined">
-              <a>{prevPage}</a>
+            <Button color="primary" variant="outlined" component="a">
+              {prevPage}
             </Button>
           </Link>
         ) : ``}
@@ -28,9 +28,9 @@ const Pager = (props) => {
       <span className="pager-item">
         {nextPage ? (
           <Link href={href} passHref as={asCallback(nextPage)}>
-          <Button color="primary" variant="outlined">
-            <a>{nextPage}</a>
-          </Button>
+            <Button color="primary" variant="outlined" component="a">
+              {nextPage}
+            </Button>
           </Link>
         ) : ``}
       </span>
