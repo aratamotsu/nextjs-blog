@@ -18,7 +18,7 @@ const useStyles = makeStyles({
     flexGrow: 1,
   },
   cardAction: {
-    height:260,
+    height:220,
   },
 });
 
@@ -46,7 +46,7 @@ export default function PostPreview({
               <Typography gutterBottom component="h2" variant="h5">
                 {title}
               </Typography>
-              <Typography variant="excerpt" paragraph>
+              <Typography variant="subtitle2" paragraph>
                 {excerpt}
               </Typography>
             </CardContent>

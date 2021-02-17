@@ -19,8 +19,8 @@ export default function Index({ allPosts }) {
           <Head>
             <title>Aratamotsu' blog</title>
           </Head>
+          <div className="max-w-6xl mx-auto mb-12">
           <Header />
-          <div className="max-w-4xl mx-auto mb-12">
             <MoreStories posts={morePosts} h1Info='Articles'/>
           <div className="mt-10 ml-auto">
             <Link href="/archive/2" passHref>

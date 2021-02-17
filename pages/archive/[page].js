@@ -23,7 +23,7 @@ export default function Index({ selectedPosts, page, total, perPage }) {
             <title>Aratamotsu' blog</title>
           </Head>
           <Header />
-          <div className="max-w-4xl mx-auto mb-12">
+          <div className="max-w-6xl mx-auto mb-12">
             <MoreStories posts={morePosts} h1Info="Archive Page: "/>
           </div>
           <Pager
