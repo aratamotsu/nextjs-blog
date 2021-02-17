@@ -20,7 +20,7 @@ export default function Index({ selectedPosts, page, total, perPage }) {
       <Layout>
         <Container>
           <Head>
-            <title>Aratamotsu' blog</title>
+            <title>Aratamotsu's blog</title>
           </Head>
           <Header />
           <div className="max-w-6xl mx-auto mb-12">

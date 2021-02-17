@@ -20,10 +20,10 @@ export default function Tags({ allTags }) {
         <Layout>
           <Container>
             <Head>
-              <title>Aratamotsu' blog</title>
+              <title>Aratamotsu's blog</title>
             </Head>
             <Header />  
-            <div className="max-w-4xl mx-auto mb-12">
+            <div className="max-w-6xl mx-auto mb-12">
                 <h1 className="my-8 text-3xl md:text-4xl font-bold tracking-tighter leading-tight">
                     Tags
                 </h1>

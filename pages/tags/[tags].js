@@ -10,13 +10,13 @@ import MoreStories from '../../components/more-stories'
 export default function TagsPosts({ postData, tag, recentPosts }) {
   // const heroPost = allPosts[0]
   const morePosts = postData
-  const h1 = 'Tag: ' + `${tag}`
+  const h1 = `${tag}`
   return (
     <>
       <Layout>
         <Container>
           <Head>
-            <title>Aratamotsu' blog</title>
+            <title>Aratamotsu's blog</title>
           </Head>
           <Header />
           <div className="max-w-6xl mx-auto mb-12">

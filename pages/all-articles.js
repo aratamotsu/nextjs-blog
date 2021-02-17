@@ -1,5 +1,5 @@
 import Container from '../components/container'
-import MoreStories from '../components/more-stories'
+import AllStories from '../components/all-stories'
 import Layout from '../components/layout'
 import { getAllPosts } from '../lib/api'
 import Head from 'next/head'
@@ -10,7 +10,6 @@ import { Button } from '@material-ui/core';
 
 export default function Index({ allPosts }) {
   // const heroPost = allPosts[0]
-  const morePosts = allPosts.slice(0, 10)
   const recentPosts = allPosts.slice(0, 5)
   return (
     <>
@@ -21,13 +20,8 @@ export default function Index({ allPosts }) {
           </Head>
           <div className="max-w-6xl mx-auto mb-12">
           <Header />
-            <MoreStories posts={morePosts} h1Info='Articles'/>
+          <AllStories posts={allPosts} h1Info='All artcles'/>
           <div className="mt-10 ml-auto">
-            <Link href="/archive/2" passHref>
-              <Button color="default" variant="outlined" component='a'>
-                Archives
-              </Button>
-            </Link>
           </div>
           </div>
           

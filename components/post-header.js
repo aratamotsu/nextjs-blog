@@ -12,7 +12,7 @@ export default function PostHeader({ title, date, tag}) {
         </div>
         <PostTitle>{title}</PostTitle>
         <div>
-          Tag: <ShowTags tags={tag} />
+        <LocalOfferIcon fontSize='small' color='primary'/> <ShowTags tags={tag} />
         </div>
       </div>
     </>

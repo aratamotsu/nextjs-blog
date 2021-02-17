@@ -7,6 +7,12 @@ import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
+import PersonIcon from '@material-ui/icons/Person';
+import MenuBookIcon from '@material-ui/icons/MenuBook';
+import CodeIcon from '@material-ui/icons/Code';
+import LabelIcon from '@material-ui/icons/Label';
+import LocalOfferIcon from '@material-ui/icons/LocalOffer';
+import WbIncandescentIcon from '@material-ui/icons/WbIncandescent';
 
 const useStyles = makeStyles((theme) => ({
   toolbar: {
@@ -29,11 +35,11 @@ const useStyles = makeStyles((theme) => ({
 export default function Header() {
   const classes = useStyles();
   const sections = [
-    { title: '本', url: '/tags/本' },
-    { title: '競プロ', url: '/tags/競プロ' },
-    { title: '日々雑感', url: '/tags/日々雑感' },
-　  { title: 'Tags', url: '/tags' },
-    { title: 'About', url: '/about' },
+    { title: '本', url: '/tags/本', icon: MenuBookIcon },
+    { title: '競プロ', url: '/tags/競プロ', icon: CodeIcon },
+    { title: '日々雑感', url: '/tags/日々雑感', icon: WbIncandescentIcon },
+　  { title: 'Tags', url: '/tags', icon: LocalOfferIcon },
+    { title: 'About', url: '/about', icon: PersonIcon },
   ];
   return (
     <div className="max-w-6xl mx-auto">
@@ -62,6 +68,7 @@ export default function Header() {
               href={`${section.url}`}
               className={classes.toolbarLink}
             >
+              <section.icon /> {" "}
               {section.title}
             </Link>
           ))}      

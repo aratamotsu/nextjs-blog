@@ -10,11 +10,11 @@
 }
 
 .markdown img {
-  @apply shadow-lg my-3
+  @apply shadow-lg my-3;
 }
 
 .markdown code{
-  @apply rounded-xl mb-2
+  @apply rounded-xl mb-2;
 }
 .markdown h2 {
   @apply text-2xl mt-10 mb-4 border-b border-gray-300 font-bold leading-relaxed;

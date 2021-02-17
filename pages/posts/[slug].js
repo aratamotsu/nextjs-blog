@@ -31,7 +31,7 @@ export default function Post({ post, recentPosts, preview }) {
             <article className="mb-32">
               <Head>
                 <title>
-                  {post.title} | Aratamotsu's Blog
+                  {post.title} | Aratamotsu's blog
                 </title>
               </Head>
               <PostHeader
