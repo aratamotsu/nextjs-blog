@@ -4,11 +4,12 @@ import Header from "../../components/header"
 import Head from 'next/head'
 import MoreStories from "../../components/more-stories"
 import { getAllPosts } from '../../lib/api'
+import LocalOfferIcon from '@material-ui/icons/LocalOffer';
 
 
 import Pager from "../../components/pager"
 
-const COUNT_PER_PAGE = 4
+const COUNT_PER_PAGE = 10
 
 export default function Index({ selectedPosts, page, total, perPage }) {
   // const heroPost = allPosts[0]

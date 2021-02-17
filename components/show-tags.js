@@ -1,20 +1,25 @@
 import Link from 'next/link'
+import Button from '@material-ui/core/Button';
 
 export default function ShowTags({ tags }) {
     return (
-        <div className="text-sm">
+        <span className="text-sm">
             {!Array.isArray(tags) ? (
-                <Link as={`/tags/${tags}`} href="/tags/[tags]">
-                    <a className="px-2 pt-0.5 mr-2 border-solid border border-black hover:bg-gray-200 rounded-md">{tags}</a>
+                <Link key={tags} href={`/tags/${tags}`} as={`/tags/${tags}`} passHref >
+                        <Button size="small" color="primary">
+                            {tags}
+                        </Button>
                 </Link>
             ) : (
                 tags.map((tag) => (
-                    <Link key={tag} as={`/tags/${tag}`} href="/tags/[tag]">
-                        <a className="px-2 pt-0.5 mr-2 border-solid border border-black hover:bg-gray-200 rounded-md">{tag}</a>
+                    <Link key={tag} href={`/tags/${tag}`} as={`/tags/${tag}`} passHref >
+                        <Button size="small" color="primary">
+                            {tag}
+                        </Button>
                     </Link>
                 ))
             )}
-        </div>
+        </span>
     )
 }
 

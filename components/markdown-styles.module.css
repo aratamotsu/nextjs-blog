@@ -17,11 +17,11 @@
   @apply rounded-xl mb-2
 }
 .markdown h2 {
-  @apply text-3xl mt-10 mb-4 border-b border-gray-300 font-bold leading-relaxed;
+  @apply text-2xl mt-10 mb-4 border-b border-gray-300 font-bold leading-relaxed;
 }
 
 .markdown h3 {
-  @apply text-2xl mt-10 mb-4 font-bold leading-snug;
+  @apply text-xl mt-10 mb-4 font-bold leading-snug;
 }
 
 .markdown a {
@@ -57,6 +57,10 @@
 }
 
 .markdown ul {
+  list-style-type: disc;
+}
+
+.container ul {
   list-style-type: disc;
 }
 

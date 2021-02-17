@@ -1,6 +1,7 @@
 import DateFormatter from '../components/date-formatter'
 import PostTitle from '../components/post-title'
 import ShowTags from '../components/show-tags'
+import LocalOfferIcon from '@material-ui/icons/LocalOffer';
 
 export default function PostHeader({ title, date, tag}) {
   return (
@@ -11,7 +12,7 @@ export default function PostHeader({ title, date, tag}) {
         </div>
         <PostTitle>{title}</PostTitle>
         <div>
-          <ShowTags tags={tag} />
+          <LocalOfferIcon fontSize='small' color='primary'/> <ShowTags tags={tag} />
         </div>
       </div>
     </>
