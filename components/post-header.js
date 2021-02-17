@@ -6,7 +6,7 @@ import LocalOfferIcon from '@material-ui/icons/LocalOffer';
 export default function PostHeader({ title, date, tag}) {
   return (
     <>
-      <div className="max-w-4xl mx-auto">
+      <div className="my-8 max-w-4xl mx-auto">
         <div className="mb-2 text-lg">
           <DateFormatter dateString={date} />
         </div>

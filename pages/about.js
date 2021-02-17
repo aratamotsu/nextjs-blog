@@ -15,7 +15,7 @@ export default function About() {
             <title>Aratamotsu' blog</title>
           </Head>
           <Header />
-          <div className="max-w-4xl mx-auto">
+          <div className="my-8 max-w-4xl mx-auto">
             <PostTitle>About</PostTitle>
           </div>
           <div className="main-content max-w-4xl mx-auto mb-12">

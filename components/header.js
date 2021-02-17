@@ -16,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
     flex: 1,
   },
   toolbarSecondary: {
+    borderBottom: `1px solid ${theme.palette.divider}`,
     justifyContent: 'space-between',
     overflowX: 'auto',
   },
@@ -34,39 +35,38 @@ export default function Header() {
 　  { title: 'Tags', url: '/tags' },
     { title: 'About', url: '/about' },
   ];
-  
   return (
     <div className="max-w-6xl mx-auto">
-    <React.Fragment>
-    <Toolbar className={classes.toolbar}>
-      <Typography
-        component="h2"
-        variant="h5"
-        color="inherit"
-        align="center"
-        noWrap
-        className={classes.toolbarTitle}
-      >
-        <Link href="/" color="inherit">
-        Aratamotsu's blog
-        </Link>
-      </Typography>
-    </Toolbar>
-    <Toolbar component="nav" variant="dense" className={classes.toolbarSecondary}>
-    {sections.map((section) => (
-          <Link
-            color="inherit"
-            noWrap
-            key={section.title}
-            variant="body2"
-            href={`${section.url}`}
-            className={classes.toolbarLink}
-          >
-            {section.title}
+      <React.Fragment>
+      <Toolbar className={classes.toolbar}>
+        <Typography
+          component="h2"
+          variant="h5"
+          color="inherit"
+          align="center"
+          noWrap
+          className={classes.toolbarTitle}
+        >
+          <Link href="/" color="inherit">
+          Aratamotsu's blog
           </Link>
-        ))}      
-    </Toolbar>
-  </React.Fragment>
-  </div>
+        </Typography>
+      </Toolbar>
+      <Toolbar component="nav" variant="dense" className={classes.toolbarSecondary}>
+      {sections.map((section) => (
+            <Link
+              color="inherit"
+              noWrap
+              key={section.title}
+              variant="body2"
+              href={`${section.url}`}
+              className={classes.toolbarLink}
+            >
+              {section.title}
+            </Link>
+          ))}      
+      </Toolbar>
+      </React.Fragment>
+    </div>
   )
 }
